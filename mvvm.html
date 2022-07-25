@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>大作业</title>
+    <style>
+        body{
+            background-image: url(1.jpg);
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            background-attachment: fixed;
+        }
+        #mvvm-app{
+            display:grid; 
+            width: 350px;
+            height: 350px;
+            margin-left: 35%;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div id="mvvm-app" >
+    输入1：<input type="text" v-model="someStr" style="margin-left: 26%;width: 150px;">
+    输入2：<input type="text" v-model="child.someStr" style="margin-left:26%;width: 150px;">
+    <p>{{ getHelloWord }}</p>
+    <p v-html="htmlStr"></p>
+    <button v-on:click="clickBtn" style="margin: 20px;width: 150px;margin-left: 26%;">ChangeButton</button>
+</div>
+
+<script src="./js/observer.js"></script>
+<script src="./js/watcher.js"></script>
+<script src="./js/compile.js"></script>
+<script src="./js/mvvm.js"></script>
+<script>
+    var vm = new MVVM({
+        el: '#mvvm-app',
+        data: {
+            someStr: 'Hello ',
+            className: 'btn',
+            child: {
+                someStr: 'World!'
+            }
+        },
+
+        computed: {
+            getHelloWord: function() {
+                return this.someStr + this.child.someStr;
+            }
+        },
+
+        methods: {
+            clickBtn: function(e) {
+                var randomStrArr = ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten'];
+                this.child.someStr = randomStrArr[parseInt(Math.random() * 10)];
+            }
+        }
+    });
+
+    vm.$watch('child.someStr', function() {
+        console.log(arguments);
+    });
+</script>
+
+</body>
+</html>
